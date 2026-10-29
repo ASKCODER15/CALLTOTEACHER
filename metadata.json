@@ -1,0 +1,6 @@
+{
+  "name": "TalktoTeach - Har Call Sambhalo, Class Pe Focus Karo",
+  "description": "AI call manager for independent tutors, tuition teachers, and coaching classes across India. Answers routine parent inquiries, routes trusted contacts, and manages personal call approvals.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
