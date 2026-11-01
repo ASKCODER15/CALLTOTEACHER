@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { ShieldCheck, ArrowLeft, Lock, Database, PhoneCall, Check } from 'lucide-react';
+import { ShieldCheck, ArrowLeft, Lock, Award, Check } from 'lucide-react';
 
 interface PrivacyPolicyProps {
   onBack: () => void;
@@ -9,123 +9,73 @@ interface PrivacyPolicyProps {
 
 export const PrivacyPolicy: React.FC<PrivacyPolicyProps> = ({ onBack }) => {
   return (
-    <div className="mx-auto max-w-4xl py-6 space-y-8 text-slate-800 dark:text-slate-200">
-      {/* Top back button */}
+    <div className="mx-auto max-w-4xl py-6 space-y-6">
       <div>
         <button
           onClick={onBack}
-          className="btn-secondary inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-semibold"
+          className="inline-flex items-center gap-1.5 rounded-full px-4 py-2 text-xs font-bold text-[#132238] dark:text-[#F8FAFC] border border-[#EAE5D9] dark:border-[#22334A] bg-white dark:bg-[#121E30] hover:bg-[#FAF6ED] transition-colors shadow-2xs"
         >
           <ArrowLeft className="h-3.5 w-3.5" />
           <span>Back to Application</span>
         </button>
       </div>
 
-      <div className="pro-card rounded-xl p-8 sm:p-10 space-y-8">
-        {/* Header */}
-        <div className="border-b border-slate-200 pb-6 dark:border-slate-800 space-y-2">
-          <div className="inline-flex items-center gap-2 rounded-md bg-indigo-50 px-2.5 py-1 text-xs font-semibold text-indigo-700 dark:bg-indigo-950/60 dark:text-indigo-300">
+      <div className="editorial-card p-8 sm:p-10 space-y-8">
+        <div className="border-b border-[#F0ECE3] pb-6 dark:border-[#1E2E44] space-y-2">
+          <div className="inline-flex items-center gap-2 rounded-full bg-[#FAF6ED] px-3 py-1 text-xs font-bold text-[#C86D51] border border-[#EAE5D9] dark:bg-[#16243A] dark:border-[#22334A]">
             <ShieldCheck className="h-4 w-4" />
-            <span>Digital Personal Data Protection (DPDP) Compliant</span>
+            <span>Digital Personal Data Protection (DPDP) Act, 2023 Compliant</span>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white">
-            Privacy Policy
+          <h1 className="font-editorial text-2xl sm:text-3xl font-bold text-[#132238] dark:text-[#F8FAFC]">
+            Call to Teach Privacy Policy
           </h1>
-          <p className="text-xs text-slate-700 dark:text-slate-300 font-medium">
-            Last Updated: October 2026 | Effective Date: October 2026
+          <p className="text-xs text-[#64748B] font-medium">
+            Call to Teach SaaS Platform | Last Updated: October 2026
           </p>
         </div>
 
-        {/* Section 1 */}
         <div className="space-y-3">
-          <h2 className="text-base font-bold text-slate-900 dark:text-white">
-            1. Commitment to Educator and Student Privacy
+          <h2 className="text-base font-bold text-[#132238] dark:text-[#F8FAFC]">
+            1. Commitment to Educator and Caller Privacy
           </h2>
-          <p className="text-xs sm:text-sm leading-relaxed text-slate-700 dark:text-slate-300">
-            TalktoTeach (&quot;CallSetu&quot;, &quot;we&quot;, &quot;our&quot;, or &quot;us&quot;) provides an automated call screening and course inquiry routing platform designed for independent tutors, home tuitions, and coaching institutes across India. We recognize that student records, parent phone numbers, and tuition fee schedules are confidential. This Privacy Policy sets out how we handle data collected through our platform in strict accordance with the Digital Personal Data Protection Act, 2023 (India) and applicable IT rules.
+          <p className="text-xs sm:text-sm leading-relaxed text-[#475569] dark:text-[#CBD5E1]">
+            Call to Teach operates as an intelligent call screening and reception service for independent tutors, private teachers, and educational institutes across India. We strictly respect the privacy of educators, their students, inquiring parents, and trusted contacts. This Privacy Policy outlines how voice audio, call logs, inquiry summaries, and contact whitelists are handled in compliance with the Digital Personal Data Protection Act, 2023.
           </p>
         </div>
 
-        {/* Section 2 */}
         <div className="space-y-3">
-          <h2 className="text-base font-bold text-slate-900 dark:text-white">
-            2. Information We Collect
+          <h2 className="text-base font-bold text-[#132238] dark:text-[#F8FAFC]">
+            2. Data Categories We Process
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs sm:text-sm">
-            <div className="rounded-lg border border-slate-300 p-4 space-y-1.5 dark:border-slate-800">
-              <span className="font-bold text-slate-900 dark:text-white block">Tutor Profile Data</span>
-              <p className="text-slate-700 dark:text-slate-300 font-medium">
-                Teacher name, official phone number, coaching center location, subjects, grade levels, and verified course fee schedules.
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+            <div className="rounded-xl border border-[#EAE5D9] dark:border-[#22334A] p-4 space-y-1.5 bg-[#FBF9F5] dark:bg-[#0C1420]">
+              <span className="font-bold text-[#132238] dark:text-[#F8FAFC] block">Educator Knowledge Base</span>
+              <p className="text-[#64748B] dark:text-[#94A3B8]">
+                Verified teacher name, subjects taught, fee schedules, batch timings, and FAQ responses entered voluntarily by the tutor.
               </p>
             </div>
-            <div className="rounded-lg border border-slate-300 p-4 space-y-1.5 dark:border-slate-800">
-              <span className="font-bold text-slate-900 dark:text-white block">Trusted Directory Data</span>
-              <p className="text-slate-700 dark:text-slate-300 font-medium">
-                Phone numbers, names, and explicit routing rules (Always, During teaching hours, or Never) entered manually by the teacher.
+            <div className="rounded-xl border border-[#EAE5D9] dark:border-[#22334A] p-4 space-y-1.5 bg-[#FBF9F5] dark:bg-[#0C1420]">
+              <span className="font-bold text-[#132238] dark:text-[#F8FAFC] block">Whitelist Contacts</span>
+              <p className="text-[#64748B] dark:text-[#94A3B8]">
+                Names, phone numbers, and transfer rules designated by the teacher for emergency family access.
               </p>
             </div>
-            <div className="rounded-lg border border-slate-300 p-4 space-y-1.5 dark:border-slate-800">
-              <span className="font-bold text-slate-900 dark:text-white block">Call Interaction Logs</span>
-              <p className="text-slate-700 dark:text-slate-300 font-medium">
-                Caller identification, call timestamp, duration, course inquiry reason, and automated screening summary.
+            <div className="rounded-xl border border-[#EAE5D9] dark:border-[#22334A] p-4 space-y-1.5 bg-[#FBF9F5] dark:bg-[#0C1420]">
+              <span className="font-bold text-[#132238] dark:text-[#F8FAFC] block">Voice Audio &amp; Transcripts</span>
+              <p className="text-[#64748B] dark:text-[#94A3B8]">
+                Inbound caller speech recordings processed for speech recognition and converted to text for query resolution.
               </p>
             </div>
           </div>
         </div>
 
-        {/* Section 3 */}
         <div className="space-y-3">
-          <h2 className="text-base font-bold text-slate-900 dark:text-white">
-            3. Strict Data Isolation Between Teachers
+          <h2 className="text-base font-bold text-[#132238] dark:text-[#F8FAFC]">
+            3. Strict Non-Monetization Guarantee
           </h2>
-          <p className="text-xs sm:text-sm leading-relaxed text-slate-700 dark:text-slate-300">
-            Every tutor account on TalktoTeach operates inside an isolated logical tenant. No tutor, administrator, or outside user has access to another educator&apos;s student marks, fee collections, trusted family numbers, or call logs. We do not aggregate or resell tutor contact lists.
+          <p className="text-xs sm:text-sm leading-relaxed text-[#475569] dark:text-[#CBD5E1]">
+            We never sell, rent, or trade educator profiles, caller telephone numbers, or academic pricing information to third-party ad networks, marketing agencies, or aggregators.
           </p>
-        </div>
-
-        {/* Section 4 */}
-        <div className="space-y-3">
-          <h2 className="text-base font-bold text-slate-900 dark:text-white">
-            4. Purpose Limitation and Processing
-          </h2>
-          <p className="text-xs sm:text-sm leading-relaxed text-slate-700 dark:text-slate-300">
-            Data provided to CallSetu is processed solely for the following explicit purposes:
-          </p>
-          <ul className="space-y-1.5 text-xs sm:text-sm text-slate-700 dark:text-slate-300 pl-4 list-disc font-medium">
-            <li>Answering routine prospective parent inquiries using the tutor&apos;s verified syllabus and fee tables.</li>
-            <li>Evaluating configured whitelist permissions for trusted contacts during active batch hours.</li>
-            <li>Transmitting 1-tap transfer prompts to the teacher&apos;s authorized screen.</li>
-            <li>Generating post-call follow-up reminders for the tutor.</li>
-          </ul>
-        </div>
-
-        {/* Section 5 */}
-        <div className="space-y-3">
-          <h2 className="text-base font-bold text-slate-900 dark:text-white">
-            5. No Third-Party Data Monetization
-          </h2>
-          <p className="text-xs leading-relaxed text-slate-600 dark:text-slate-300">
-            We never sell, rent, or lease educator or student information to ed-tech aggregators, advertisers, or loan providers. Inquiries submitted via CallSetu remain the sole property of the coaching center.
-          </p>
-        </div>
-
-        {/* Section 6 */}
-        <div className="space-y-3">
-          <h2 className="text-base font-bold text-slate-900 dark:text-white">
-            6. Tutor Data Rights and Deletion
-          </h2>
-          <p className="text-xs leading-relaxed text-slate-600 dark:text-slate-300">
-            Tutors retain full rights to export, correct, or permanently erase their class profiles, call history records, and trusted directory entries at any point via the dashboard settings or by contacting privacy@talktoteach.in.
-          </p>
-        </div>
-
-        {/* Section 7 */}
-        <div className="border-t border-slate-200 pt-6 dark:border-slate-800 text-xs text-slate-500 space-y-1">
-          <p className="font-semibold text-slate-700 dark:text-slate-300">
-            Grievance Officer:
-          </p>
-          <p>TalktoTeach Compliance Cell | Email: privacy@talktoteach.in</p>
-          <p>Registered Office: Pune, Maharashtra, India - 411038</p>
         </div>
       </div>
     </div>

@@ -18,6 +18,7 @@ interface AppContextType {
   currentTeacher: TeacherAccount;
   currentTeacherId: string;
   setCurrentTeacherId: (id: string) => void;
+  addNewTeacher: (name: string, category: string, className: string) => void;
   updateClassProfile: (profile: Partial<ClassProfile>) => void;
   addTrustedContact: (contact: Omit<TrustedContact, 'id' | 'createdAt'>) => void;
   updateTrustedContact: (id: string, contact: Partial<TrustedContact>) => void;
@@ -29,7 +30,15 @@ interface AppContextType {
   updateFAQ: (id: string, faq: Partial<FAQItem>) => void;
   deleteFAQ: (id: string) => void;
   pendingApprovals: PendingApproval[];
-  createPendingApproval: (data: Omit<PendingApproval, 'id' | 'secondsRemaining' | 'status'>) => PendingApproval;
+  createPendingApproval: (data: {
+    callerName: string;
+    callerNumber: string;
+    relationship?: string;
+    purpose: string;
+    callId?: string;
+    urgency?: 'high' | 'normal';
+    timestamp?: string;
+  }) => PendingApproval;
   approveTransfer: (approvalId: string) => void;
   declineTransfer: (approvalId: string, reason?: string) => void;
   triggerApprovalTimeout: (approvalId: string) => void;
@@ -37,14 +46,14 @@ interface AppContextType {
   resetDemoData: () => void;
 }
 
-const STORAGE_KEY = 'talktoteach_teachers_v1';
-const ACTIVE_TEACHER_KEY = 'talktoteach_active_teacher_id';
+const STORAGE_KEY = 'calltoteach_teachers_v2';
+const ACTIVE_TEACHER_KEY = 'calltoteach_active_teacher_id';
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
 export function AppProvider({ children }: { children: React.ReactNode }) {
   const [teachers, setTeachers] = useState<TeacherAccount[]>(INITIAL_TEACHERS);
-  const [currentTeacherId, setCurrentTeacherId] = useState<string>('teacher_bhavani');
+  const [currentTeacherId, setCurrentTeacherId] = useState<string>('teacher_sunita');
   const [pendingApprovals, setPendingApprovals] = useState<PendingApproval[]>([]);
   const isHydratedRef = React.useRef(false);
 
@@ -53,7 +62,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     try {
       const savedTeachers = localStorage.getItem(STORAGE_KEY);
       const savedTeacherId = localStorage.getItem(ACTIVE_TEACHER_KEY);
-      
+
       queueMicrotask(() => {
         if (savedTeachers) {
           try {
@@ -79,7 +88,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(teachers));
     } catch {
-      // Ignore quota or disabled storage
+      // Ignore storage errors
     }
   }, [teachers]);
 
@@ -90,8 +99,20 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     } catch {}
   }, [currentTeacherId]);
 
-  const currentTeacher =
+  const rawTeacher =
     teachers.find((t) => t.id === currentTeacherId) || teachers[0] || INITIAL_TEACHERS[0];
+
+  const currentTeacher: TeacherAccount = {
+    ...rawTeacher,
+    callSettings: {
+      ...rawTeacher.callSettings,
+      aiVoice: rawTeacher.callSettings?.aiVoice || 'Nalini',
+      aiModel: rawTeacher.callSettings?.aiModel || 'timbre-v2.5',
+      aiSpeed: rawTeacher.callSettings?.aiSpeed ?? 1.0,
+      aiLanguage: rawTeacher.callSettings?.aiLanguage || 'hinglish',
+      aiVoiceTone: rawTeacher.callSettings?.aiVoiceTone || 'warm_respectful'
+    }
+  };
 
   const updateCurrentTeacher = (updater: (prev: TeacherAccount) => TeacherAccount) => {
     setTeachers((prevList) =>
@@ -99,10 +120,99 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     );
   };
 
-  const updateClassProfile = (profile: Partial<ClassProfile>) => {
-    updateCurrentTeacher((t) => ({
-      ...t,
-      profile: { ...t.profile, ...profile }
+  const addNewTeacher = (name: string, category: string, className: string) => {
+    const id = `teacher_${Date.now()}`;
+    const initials = name
+      .split(' ')
+      .map((n) => n[0])
+      .join('')
+      .toUpperCase()
+      .slice(0, 2);
+
+    const newTeacher: TeacherAccount = {
+      id,
+      name,
+      category,
+      email: `${name.toLowerCase().replace(/\s+/g, '.')}@calltoteach.in`,
+      avatar: initials || 'TC',
+      profile: {
+        className,
+        tagline: `${category} · Personalized Coaching`,
+        teacherName: name,
+        category: category as any,
+        qualification: 'Experienced Educator',
+        experienceYears: 5,
+        phone: '+91 98000 00000',
+        location: 'Coaching Studio / Home Classroom',
+        city: 'Delhi',
+        pincode: '110001',
+        grades: ['Beginner', 'Intermediate', 'Board Prep'],
+        subjects: [category],
+        feeStructure: [
+          {
+            gradeCategory: 'Monthly Regular Tuition',
+            amount: '₹3,000',
+            billingCycle: 'per month',
+            details: 'Includes personalized study notes and weekly doubt clinics.'
+          }
+        ],
+        batches: [
+          {
+            id: `b_${Date.now()}`,
+            name: 'Regular Batch A',
+            timing: '05:00 PM - 06:30 PM',
+            grades: 'All Grades',
+            days: 'Mon, Wed, Fri',
+            seatsTotal: 15,
+            seatsLeft: 5
+          }
+        ],
+        teachingHours: {
+          start: '16:00',
+          end: '21:00',
+          days: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+        },
+        admissionsPolicy: 'Free trial lesson available upon prior reservation.',
+        faqs: [
+          {
+            id: `faq_${Date.now()}`,
+            question: 'What are the batch timings?',
+            answer: 'Classes run on weekday evenings between 5:00 PM and 8:30 PM.'
+          }
+        ]
+      },
+      trustedContacts: [],
+      callSettings: {
+        teachingHoursEnabled: true,
+        teachingStart: '16:00',
+        teachingEnd: '21:00',
+        teachingDays: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+        aiLanguage: 'hinglish',
+        aiVoiceTone: 'warm_respectful',
+        aiVoice: 'Nalini',
+        aiModel: 'timbre-v2.5',
+        aiSpeed: 1.0,
+        personalCallApproval: 'always_ask',
+        timeoutAction: 'take_message',
+        timeoutSeconds: 15,
+        allowEmergencyBypass: true,
+        sendWhatsappSummaryToTeacher: true,
+        sendWhatsappConfirmationToCaller: true
+      },
+      callHistory: []
+    };
+
+    setTeachers((prev) => [newTeacher, ...prev]);
+    setCurrentTeacherId(id);
+  };
+
+  const updateClassProfile = (newProfile: Partial<ClassProfile>) => {
+    updateCurrentTeacher((prev) => ({
+      ...prev,
+      profile: {
+        ...prev.profile,
+        ...newProfile
+      }
     }));
   };
 
@@ -112,30 +222,33 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       id: `tc_${Date.now()}`,
       createdAt: new Date().toISOString().split('T')[0]
     };
-    updateCurrentTeacher((t) => ({
-      ...t,
-      trustedContacts: [newContact, ...t.trustedContacts]
+    updateCurrentTeacher((prev) => ({
+      ...prev,
+      trustedContacts: [newContact, ...prev.trustedContacts]
     }));
   };
 
-  const updateTrustedContact = (id: string, contact: Partial<TrustedContact>) => {
-    updateCurrentTeacher((t) => ({
-      ...t,
-      trustedContacts: t.trustedContacts.map((c) => (c.id === id ? { ...c, ...contact } : c))
+  const updateTrustedContact = (id: string, updated: Partial<TrustedContact>) => {
+    updateCurrentTeacher((prev) => ({
+      ...prev,
+      trustedContacts: prev.trustedContacts.map((c) => (c.id === id ? { ...c, ...updated } : c))
     }));
   };
 
   const deleteTrustedContact = (id: string) => {
-    updateCurrentTeacher((t) => ({
-      ...t,
-      trustedContacts: t.trustedContacts.filter((c) => c.id !== id)
+    updateCurrentTeacher((prev) => ({
+      ...prev,
+      trustedContacts: prev.trustedContacts.filter((c) => c.id !== id)
     }));
   };
 
   const updateCallSettings = (settings: Partial<CallSettings>) => {
-    updateCurrentTeacher((t) => ({
-      ...t,
-      callSettings: { ...t.callSettings, ...settings }
+    updateCurrentTeacher((prev) => ({
+      ...prev,
+      callSettings: {
+        ...prev.callSettings,
+        ...settings
+      }
     }));
   };
 
@@ -145,63 +258,80 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       id: `call_${Date.now()}`,
       isSyntheticDemo: true
     };
-    updateCurrentTeacher((t) => ({
-      ...t,
-      callHistory: [newLog, ...t.callHistory]
+    updateCurrentTeacher((prev) => ({
+      ...prev,
+      callHistory: [newLog, ...prev.callHistory]
     }));
     return newLog;
   };
 
   const updateCallFollowUp = (callId: string, status: FollowUpStatus) => {
-    updateCurrentTeacher((t) => ({
-      ...t,
-      callHistory: t.callHistory.map((c) => (c.id === callId ? { ...c, followUpStatus: status } : c))
+    updateCurrentTeacher((prev) => ({
+      ...prev,
+      callHistory: prev.callHistory.map((c) =>
+        c.id === callId ? { ...c, followUpStatus: status } : c
+      )
     }));
   };
 
   const addFAQ = (faq: Omit<FAQItem, 'id'>) => {
     const newFaq: FAQItem = {
-      ...faq,
-      id: `faq_${Date.now()}`
+      id: `faq_${Date.now()}`,
+      ...faq
     };
-    updateCurrentTeacher((t) => ({
-      ...t,
+    updateCurrentTeacher((prev) => ({
+      ...prev,
       profile: {
-        ...t.profile,
-        faqs: [...t.profile.faqs, newFaq]
+        ...prev.profile,
+        faqs: [...prev.profile.faqs, newFaq]
       }
     }));
   };
 
-  const updateFAQ = (id: string, faq: Partial<FAQItem>) => {
-    updateCurrentTeacher((t) => ({
-      ...t,
+  const updateFAQ = (id: string, updated: Partial<FAQItem>) => {
+    updateCurrentTeacher((prev) => ({
+      ...prev,
       profile: {
-        ...t.profile,
-        faqs: t.profile.faqs.map((f) => (f.id === id ? { ...f, ...faq } : f))
+        ...prev.profile,
+        faqs: prev.profile.faqs.map((f) => (f.id === id ? { ...f, ...updated } : f))
       }
     }));
   };
 
   const deleteFAQ = (id: string) => {
-    updateCurrentTeacher((t) => ({
-      ...t,
+    updateCurrentTeacher((prev) => ({
+      ...prev,
       profile: {
-        ...t.profile,
-        faqs: t.profile.faqs.filter((f) => f.id !== id)
+        ...prev.profile,
+        faqs: prev.profile.faqs.filter((f) => f.id !== id)
       }
     }));
   };
 
-  const createPendingApproval = (data: Omit<PendingApproval, 'id' | 'secondsRemaining' | 'status'>): PendingApproval => {
-    const item: PendingApproval = {
-      ...data,
-      id: `approval_${Date.now()}`,
+  // Pending Approvals
+  const createPendingApproval = (data: {
+    callerName: string;
+    callerNumber: string;
+    relationship?: string;
+    purpose: string;
+    callId?: string;
+    urgency?: 'high' | 'normal';
+    timestamp?: string;
+  }): PendingApproval => {
+    const approval: PendingApproval = {
+      id: `appr_${Date.now()}`,
+      callId: data.callId || `call_${Date.now()}`,
+      callerName: data.callerName,
+      callerNumber: data.callerNumber,
+      relationship: data.relationship,
+      purpose: data.purpose,
+      urgency: data.urgency || 'normal',
+      timestamp: data.timestamp || 'Just now',
       secondsRemaining: currentTeacher.callSettings.timeoutSeconds || 15,
       status: 'pending'
     };
-    setPendingApprovals((prev) => [item, ...prev]);
-    return item;
+    setPendingApprovals((prev) => [approval, ...prev]);
+    return approval;
   };
 
   const approveTransfer = (approvalId: string) => {
@@ -228,7 +358,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
 
   const resetDemoData = () => {
     setTeachers(INITIAL_TEACHERS);
-    setCurrentTeacherId('teacher_bhavani');
+    setCurrentTeacherId('teacher_sunita');
     setPendingApprovals([]);
     try {
       localStorage.removeItem(STORAGE_KEY);
@@ -243,6 +373,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
         currentTeacher,
         currentTeacherId,
         setCurrentTeacherId,
+        addNewTeacher,
         updateClassProfile,
         addTrustedContact,
         updateTrustedContact,

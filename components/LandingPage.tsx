@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import { useApp } from '@/lib/store';
 import {
   PhoneCall,
   ShieldCheck,
@@ -9,12 +10,22 @@ import {
   ArrowRight,
   UserCheck,
   Check,
-  Globe
+  Globe,
+  Sparkles,
+  MessageSquare,
+  Lock,
+  Play,
+  Layers,
+  GraduationCap,
+  Users,
+  Zap,
+  HelpCircle,
+  Radio,
+  BookOpen
 } from 'lucide-react';
 
 interface LandingPageProps {
-  onEnterApp: (tab?: string) => void;
-  onLaunchSimulation: (scenarioType?: 'scenario_a' | 'scenario_b' | 'scenario_c') => void;
+  onEnterApp: (tab?: string, scenario?: string) => void;
   onOpenPrivacy: () => void;
   onOpenTerms: () => void;
   onOpenDomain: () => void;
@@ -22,425 +33,354 @@ interface LandingPageProps {
 
 export const LandingPage: React.FC<LandingPageProps> = ({
   onEnterApp,
-  onLaunchSimulation,
   onOpenPrivacy,
   onOpenTerms,
   onOpenDomain
 }) => {
+  const { currentTeacher } = useApp();
+
   return (
-    <div className="min-h-screen space-y-16 py-6">
-      {/* Hero Section */}
-      <section className="relative pt-6 pb-12 md:pt-10 md:pb-16 border-b border-slate-200 dark:border-slate-800">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:items-center">
-            {/* Left Content */}
-            <div className="lg:col-span-7 space-y-6 text-left">
-              {/* Product Kicker */}
-              <div className="inline-flex items-center gap-2 rounded-md bg-indigo-50 px-3 py-1.5 text-xs font-bold text-indigo-900 border border-indigo-200 dark:bg-indigo-950/80 dark:border-indigo-800 dark:text-indigo-200">
-                <ShieldCheck className="h-4 w-4 text-indigo-700 dark:text-indigo-400" />
-                <span>CallSetu Telephony Workflow for Indian Coaching Institutes</span>
-              </div>
-
-              {/* Mandatory Headline */}
-              <h1 className="text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl lg:text-5xl dark:text-white leading-[1.15]">
-                Har call sambhalo. <br />
-                <span className="text-indigo-700 dark:text-indigo-400">
-                  Class pe focus karo.
-                </span>
-              </h1>
-
-              {/* Hindi subtext */}
-              <p className="text-lg font-bold text-slate-800 dark:text-slate-100">
-                हर ज़रूरी कॉल अटेंड होगी - बिना क्लास डिस्टर्ब किए।
-              </p>
-
-              <p className="max-w-xl text-sm sm:text-base text-slate-700 dark:text-slate-200 leading-relaxed font-normal">
-                During active batches, answering phone calls disrupts students, while ignoring calls risks missing prospective student admissions or urgent family notices. CallSetu answers routine parent inquiries using your verified course fees and schedules, evaluates trusted contact permissions, and screens personal calls for 1-tap authorization.
-              </p>
-
-              {/* Call to Actions */}
-              <div className="flex flex-wrap items-center gap-3 pt-2">
-                <button
-                  onClick={() => onEnterApp('overview')}
-                  className="btn-primary flex items-center gap-2 rounded-lg px-5 py-3 text-sm font-bold shadow-sm"
-                >
-                  <span>Open Teacher Dashboard</span>
-                  <ArrowRight className="h-4 w-4" />
-                </button>
-
-                <button
-                  onClick={() => onLaunchSimulation('scenario_b')}
-                  className="btn-secondary flex items-center gap-2 rounded-lg px-4 py-3 text-sm font-bold shadow-xs"
-                >
-                  <PhoneCall className="h-4 w-4 text-indigo-700 dark:text-indigo-400" />
-                  <span>Simulate Parent Inquiry Call</span>
-                </button>
-
-                <button
-                  onClick={onOpenDomain}
-                  className="btn-secondary flex items-center gap-1.5 rounded-lg px-3.5 py-3 text-xs font-bold shadow-xs"
-                >
-                  <Globe className="h-3.5 w-3.5 text-slate-600 dark:text-slate-400" />
-                  <span>Custom Domain</span>
-                </button>
-              </div>
-
-              {/* Functional Principles */}
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-6 border-t border-slate-200 dark:border-slate-800 text-xs sm:text-sm">
-                <div className="space-y-1">
-                  <span className="font-bold text-slate-900 dark:text-white block">Verified Fee Data</span>
-                  <span className="text-slate-600 dark:text-slate-300 font-medium">Only quotes tutor&apos;s verified rates</span>
-                </div>
-                <div className="space-y-1">
-                  <span className="font-bold text-slate-900 dark:text-white block">Strict Whitelist</span>
-                  <span className="text-slate-600 dark:text-slate-300 font-medium">Rule-based trusted contact routing</span>
-                </div>
-                <div className="space-y-1">
-                  <span className="font-bold text-slate-900 dark:text-white block">Teacher Privacy</span>
-                  <span className="text-slate-600 dark:text-slate-300 font-medium">Completely isolated data per tutor</span>
-                </div>
-              </div>
-            </div>
-
-            {/* Right Architectural Schematic */}
-            <div className="lg:col-span-5">
-              <div className="pro-card rounded-xl p-6 space-y-4 shadow-sm">
-                <div className="flex items-center justify-between pb-3 border-b border-slate-200 dark:border-slate-800">
-                  <div className="flex items-center gap-2">
-                    <span className="flex h-2.5 w-2.5 rounded-full bg-emerald-500" />
-                    <span className="text-xs font-bold text-slate-900 dark:text-white uppercase tracking-wider">
-                      Active Batch Guard Mode
-                    </span>
-                  </div>
-                  <span className="text-xs font-bold text-slate-700 dark:text-slate-300 tabular-nums">
-                    04:00 PM - 09:30 PM
-                  </span>
-                </div>
-
-                {/* Simulated Screen Card */}
-                <div className="rounded-lg border border-slate-200 bg-slate-50 p-4 space-y-3 dark:border-slate-800 dark:bg-slate-900">
-                  <div className="flex items-center justify-between text-xs">
-                    <span className="font-bold text-slate-900 dark:text-white">
-                      Incoming Call Identified
-                    </span>
-                    <span className="font-mono font-semibold text-slate-700 dark:text-slate-300">
-                      +91 98901 88776
-                    </span>
-                  </div>
-
-                  <div className="space-y-2.5 text-xs">
-                    <div className="rounded border border-indigo-200 bg-indigo-50/80 p-3 text-indigo-950 dark:border-indigo-800 dark:bg-indigo-950/60 dark:text-indigo-100">
-                      <p className="font-bold text-[11px] uppercase tracking-wider text-indigo-800 dark:text-indigo-300">
-                        Parent Query:
-                      </p>
-                      <p className="text-xs mt-1 font-semibold leading-relaxed">
-                        &quot;Class 10 Board science batch monthly fees kitni hai?&quot;
-                      </p>
-                    </div>
-
-                    <div className="rounded border border-emerald-300 bg-white p-3 text-slate-900 shadow-xs dark:border-emerald-800 dark:bg-slate-850 dark:text-slate-100">
-                      <p className="font-bold text-[11px] uppercase tracking-wider text-emerald-800 dark:text-emerald-400">
-                        CallSetu Automated Response:
-                      </p>
-                      <p className="text-xs mt-1 font-medium leading-relaxed">
-                        &quot;Class 10 monthly fee Rs 2,800 hai, jisme weekly mock test paper aur study notes include rehte hain. Kal 4:30 PM trial demo class attend karna chahenge?&quot;
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="flex items-center justify-between pt-1 text-xs text-slate-700 dark:text-slate-300 font-medium">
-                    <span>Outcome: <strong className="text-emerald-700 dark:text-emerald-400">Answered by AI</strong></span>
-                    <span>Teacher Disturbance: <strong className="text-slate-900 dark:text-white">0 Seconds</strong></span>
-                  </div>
-                </div>
-
-                <button
-                  onClick={() => onLaunchSimulation('scenario_b')}
-                  className="w-full btn-secondary rounded-lg py-2.5 text-xs font-bold"
-                >
-                  Test Interactive Call Simulator
-                </button>
-              </div>
-            </div>
-          </div>
+    <div className="space-y-20 pb-20 max-w-6xl mx-auto">
+      {/* 1. HERO SECTION */}
+      <section className="pt-10 sm:pt-16 text-center space-y-6 max-w-4xl mx-auto">
+        {/* Editorial Subtitle Badge */}
+        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-[#D9D1C2] dark:border-[#2E4362] bg-[#FAF6ED] dark:bg-[#16243A] text-xs font-bold text-[#1B365D] dark:text-[#93B4E0] tracking-wide uppercase">
+          <Sparkles className="h-3.5 w-3.5 text-[#C86D51]" />
+          <span>The AI Call Screening Platform for Educators</span>
         </div>
-      </section>
 
-      {/* The Indian Teacher Problem Section */}
-      <section id="problem" className="py-8">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="mx-auto max-w-3xl text-left space-y-2">
-            <h2 className="text-xs font-bold tracking-wider uppercase text-indigo-700 dark:text-indigo-400">
-              Operational Realities
-            </h2>
-            <h3 className="text-xl font-bold tracking-tight text-slate-900 sm:text-2xl dark:text-white">
-              Why Unmanaged Calling Impacts Independent Educators
-            </h3>
-            <p className="text-sm text-slate-700 dark:text-slate-300 font-normal leading-relaxed">
-              Unlike larger commercial coaching chains with staffed front desks, independent tutors and home tuition teachers must balance active instruction with administrative responsiveness.
-            </p>
-          </div>
+        {/* Hero Headline */}
+        <h1 className="font-editorial text-4xl sm:text-6xl lg:text-7xl font-bold text-[#132238] dark:text-[#F8FAFC] tracking-tight leading-[1.08] text-balance">
+          You teach.
+          <br />
+          <span className="text-[#C86D51] italic">We handle the calls.</span>
+        </h1>
 
-          <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="pro-card rounded-xl p-6 space-y-2.5">
-              <h4 className="text-base font-bold text-slate-900 dark:text-white">1. Instructional Continuity</h4>
-              <p className="text-xs sm:text-sm text-slate-700 dark:text-slate-300 leading-relaxed font-normal">
-                Interrupting a complex derivation or board exam review to answer a routine fee query breaks the focus of fifteen to twenty students present in the batch.
-              </p>
-            </div>
+        {/* Supporting Copy */}
+        <p className="text-base sm:text-xl text-[#475569] dark:text-[#CBD5E1] max-w-2xl mx-auto leading-relaxed text-balance font-normal">
+          An AI receptionist built for teachers, tutors, and coaching classes. Stay focused on your students while routine inquiries and incoming calls are handled intelligently.
+        </p>
 
-            <div className="pro-card rounded-xl p-6 space-y-2.5">
-              <h4 className="text-base font-bold text-slate-900 dark:text-white">2. Timely Parent Inquiries</h4>
-              <p className="text-xs sm:text-sm text-slate-700 dark:text-slate-300 leading-relaxed font-normal">
-                Prospective parents calling during peak evening hours often seek quick answers regarding batches, demo classes, and monthly fees. Unanswered calls result in lost inquiries.
-              </p>
-            </div>
-
-            <div className="pro-card rounded-xl p-6 space-y-2.5">
-              <h4 className="text-base font-bold text-slate-900 dark:text-white">3. Genuine Urgent Matters</h4>
-              <p className="text-xs sm:text-sm text-slate-700 dark:text-slate-300 leading-relaxed font-normal">
-                Keeping the phone entirely on silent creates anxiety regarding family emergencies, school principal calls, or critical student transportation updates.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* The 3 Core Scenarios Section */}
-      <section id="scenarios" className="py-8 border-t border-slate-200 dark:border-slate-800">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="mx-auto max-w-3xl text-left space-y-2">
-            <h2 className="text-xs font-bold tracking-wider uppercase text-indigo-700 dark:text-indigo-400">
-              Deterministic Logic
-            </h2>
-            <h3 className="text-xl font-bold tracking-tight text-slate-900 sm:text-2xl dark:text-white">
-              Three Specific Caller Scenarios Handled
-            </h3>
-            <p className="text-sm text-slate-700 dark:text-slate-300 font-normal">
-              Every caller is evaluated strictly against the educator&apos;s verified rules.
-            </p>
-          </div>
-
-          <div className="mt-8 grid grid-cols-1 lg:grid-cols-3 gap-6">
-            {/* Scenario A */}
-            <div className="pro-card rounded-xl p-6 flex flex-col justify-between space-y-4">
-              <div className="space-y-3">
-                <span className="rounded bg-indigo-50 px-2 py-1 text-xs font-bold text-indigo-900 dark:bg-indigo-950 dark:text-indigo-200">
-                  Scenario A
-                </span>
-                <h4 className="text-base font-bold text-slate-900 dark:text-white">
-                  Approved Trusted Contact
-                </h4>
-                <p className="text-xs sm:text-sm text-slate-700 dark:text-slate-300 leading-relaxed font-normal">
-                  Incoming number matches the teacher&apos;s pre-configured trusted contact list (spouse, school head, or clinic).
-                </p>
-                <div className="rounded border border-slate-200 bg-slate-50 p-3.5 text-xs space-y-1 dark:border-slate-800 dark:bg-slate-900">
-                  <span className="font-bold text-slate-900 dark:text-white block">Configured Behavior:</span>
-                  <p className="text-slate-700 dark:text-slate-300 text-xs font-normal leading-relaxed">
-                    Evaluates rule &quot;During teaching hours&quot; and presents a silent 1-tap screen card on the teacher&apos;s device to authorize transfer.
-                  </p>
-                </div>
-              </div>
-              <button
-                onClick={() => onLaunchSimulation('scenario_a')}
-                className="btn-secondary w-full rounded-lg py-2.5 text-xs font-bold"
-              >
-                Simulate Scenario A
-              </button>
-            </div>
-
-            {/* Scenario B */}
-            <div className="pro-card rounded-xl p-6 flex flex-col justify-between space-y-4 border-indigo-400">
-              <div className="space-y-3">
-                <span className="rounded bg-violet-50 px-2 py-1 text-xs font-bold text-violet-900 dark:bg-violet-950 dark:text-violet-200">
-                  Scenario B
-                </span>
-                <h4 className="text-base font-bold text-slate-900 dark:text-white">
-                  Parent Inquiry (Fees &amp; Timings)
-                </h4>
-                <p className="text-xs sm:text-sm text-slate-700 dark:text-slate-300 leading-relaxed font-normal">
-                  A prospective parent calls to ask about monthly tuition fees, seat availability, test series, or trial classes.
-                </p>
-                <div className="rounded border border-indigo-200 bg-indigo-50/70 p-3.5 text-xs space-y-1 dark:border-indigo-900 dark:bg-indigo-950/40">
-                  <span className="font-bold text-indigo-950 dark:text-indigo-200 block">Configured Behavior:</span>
-                  <p className="text-indigo-900 dark:text-indigo-300 text-xs font-medium leading-relaxed">
-                    CallSetu answers with exact verified fees and timings from the Class Profile, books a demo trial, and logs the inquiry.
-                  </p>
-                </div>
-              </div>
-              <button
-                onClick={() => onLaunchSimulation('scenario_b')}
-                className="btn-primary w-full rounded-lg py-2.5 text-xs font-bold"
-              >
-                Simulate Scenario B
-              </button>
-            </div>
-
-            {/* Scenario C */}
-            <div className="pro-card rounded-xl p-6 flex flex-col justify-between space-y-4">
-              <div className="space-y-3">
-                <span className="rounded bg-amber-50 px-2 py-1 text-xs font-bold text-amber-900 dark:bg-amber-950 dark:text-amber-200">
-                  Scenario C
-                </span>
-                <h4 className="text-base font-bold text-slate-900 dark:text-white">
-                  Personal / Unknown Caller
-                </h4>
-                <p className="text-xs sm:text-sm text-slate-700 dark:text-slate-300 leading-relaxed font-normal">
-                  A courier delivery associate or unknown caller asks to speak to the teacher immediately.
-                </p>
-                <div className="rounded border border-slate-200 bg-slate-50 p-3.5 text-xs space-y-1 dark:border-slate-800 dark:bg-slate-900">
-                  <span className="font-bold text-slate-900 dark:text-white block">Security Policy:</span>
-                  <p className="text-slate-700 dark:text-slate-300 text-xs font-normal leading-relaxed">
-                    Identity is never auto-trusted. CallSetu asks the specific purpose, holds the line, and alerts the educator for authorization.
-                  </p>
-                </div>
-              </div>
-              <button
-                onClick={() => onLaunchSimulation('scenario_c')}
-                className="btn-secondary w-full rounded-lg py-2.5 text-xs font-bold"
-              >
-                Simulate Scenario C
-              </button>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Engine Architecture Section */}
-      <section id="how-it-works" className="py-8 border-t border-slate-200 dark:border-slate-800">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-            <div className="lg:col-span-5 space-y-3">
-              <h2 className="text-xs font-bold tracking-wider uppercase text-indigo-700 dark:text-indigo-400">
-                System Workflow
-              </h2>
-              <h3 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">
-                How CallSetu Processes Inbound Calls
-              </h3>
-              <p className="text-sm text-slate-700 dark:text-slate-300 leading-relaxed font-normal">
-                Structured decision rules prevent unauthorized interruptions while ensuring legitimate inquiries receive immediate answers.
-              </p>
-
-              <div className="space-y-3 pt-2">
-                {[
-                  { title: 'Isolated Database Architecture', desc: 'Each tutor account has segregated contacts, syllabus, and call history.' },
-                  { title: 'Language Preferences', desc: 'Communicates in conversational Hinglish, pure Hindi, Indian English, Gujarati, or Marathi.' },
-                  { title: 'Deterministic Fallback Handling', desc: 'If the teacher does not respond, CallSetu takes a detailed message or offers callback scheduling.' },
-                  { title: 'Custom Domain Hosting', desc: 'Map your coaching center website to your own custom domain name.' }
-                ].map((item, idx) => (
-                  <div key={idx} className="flex items-start gap-2.5">
-                    <div className="flex h-5 w-5 items-center justify-center rounded bg-emerald-100 text-emerald-800 mt-0.5 shrink-0 dark:bg-emerald-950 dark:text-emerald-300">
-                      <Check className="h-3.5 w-3.5 font-bold" />
-                    </div>
-                    <div>
-                      <p className="text-sm font-bold text-slate-900 dark:text-white">{item.title}</p>
-                      <p className="text-xs text-slate-600 dark:text-slate-300 font-normal">{item.desc}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div className="lg:col-span-7">
-              <div className="pro-card rounded-xl p-6 space-y-3 shadow-xs">
-                <h4 className="text-xs font-bold text-slate-900 dark:text-white uppercase tracking-wider">
-                  Call Progression Pipeline
-                </h4>
-
-                <div className="space-y-2.5 text-xs sm:text-sm">
-                  <div className="flex items-center gap-3 rounded-lg border border-slate-200 bg-white p-3.5 dark:border-slate-800 dark:bg-slate-900">
-                    <span className="font-mono font-bold text-indigo-700 text-sm">01</span>
-                    <div>
-                      <p className="font-bold text-slate-900 dark:text-white">Teaching Schedule Check</p>
-                      <p className="text-xs text-slate-600 dark:text-slate-300 font-normal">Evaluates active batch timing (e.g. 04:00 PM - 09:30 PM).</p>
-                    </div>
-                  </div>
-
-                  <div className="flex items-center gap-3 rounded-lg border border-slate-200 bg-white p-3.5 dark:border-slate-800 dark:bg-slate-900">
-                    <span className="font-mono font-bold text-indigo-700 text-sm">02</span>
-                    <div>
-                      <p className="font-bold text-slate-900 dark:text-white">Directory Verification</p>
-                      <p className="text-xs text-slate-600 dark:text-slate-300 font-normal">Matches number against configured Trusted Directory rules.</p>
-                    </div>
-                  </div>
-
-                  <div className="flex items-center gap-3 rounded-lg border border-slate-200 bg-white p-3.5 dark:border-slate-800 dark:bg-slate-900">
-                    <span className="font-mono font-bold text-indigo-700 text-sm">03</span>
-                    <div>
-                      <p className="font-bold text-slate-900 dark:text-white">Knowledge Base Grounding</p>
-                      <p className="text-xs text-slate-600 dark:text-slate-300 font-normal">Answers inquiries using tutor-verified fee tables and batch hours.</p>
-                    </div>
-                  </div>
-
-                  <div className="flex items-center gap-3 rounded-lg border border-slate-200 bg-white p-3.5 dark:border-slate-800 dark:bg-slate-900">
-                    <span className="font-mono font-bold text-indigo-700 text-sm">04</span>
-                    <div>
-                      <p className="font-bold text-slate-900 dark:text-white">1-Tap Screen Authorization</p>
-                      <p className="text-xs text-slate-600 dark:text-slate-300 font-normal">Teacher approves transfer or CallSetu records follow-up message.</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Production Readiness & Custom Domain Banner */}
-      <section className="pro-card rounded-xl p-6 sm:p-8 space-y-4 shadow-xs">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <div className="space-y-1">
-            <h3 className="text-base font-bold text-slate-900 dark:text-white">
-              Connected Custom Domain &amp; Institutional Branding
-            </h3>
-            <p className="text-xs sm:text-sm text-slate-700 dark:text-slate-300 font-normal">
-              Connect your coaching institute&apos;s own domain name with automated SSL and CNAME record verification.
-            </p>
-          </div>
-
+        {/* Primary Call to Action */}
+        <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-3">
           <button
-            onClick={onOpenDomain}
-            className="btn-primary self-start rounded-lg px-4 py-2.5 text-xs font-bold whitespace-nowrap"
+            onClick={() => onEnterApp('overview')}
+            className="w-full sm:w-auto px-8 py-4 rounded-full bg-[#1B365D] hover:bg-[#152B4A] text-white text-sm font-bold transition-all shadow-md flex items-center justify-center gap-2"
           >
-            Configure Custom Domain
+            <span>Open Educator Workspace</span>
+            <ArrowRight className="h-4 w-4" />
+          </button>
+          <button
+            onClick={() => onEnterApp('simulator', 'scenario_b')}
+            className="w-full sm:w-auto px-7 py-4 rounded-full border border-[#D9D1C2] dark:border-[#22334A] bg-white dark:bg-[#121E30] text-[#132238] dark:text-[#F8FAFC] text-sm font-bold hover:border-[#1B365D] transition-colors flex items-center justify-center gap-2 shadow-2xs"
+          >
+            <Play className="h-4 w-4 text-[#C86D51] fill-current" />
+            <span>Test Live Voice Call</span>
+          </button>
+        </div>
+
+        {/* Quiet Trust Metrics */}
+        <div className="pt-6 flex flex-wrap items-center justify-center gap-6 text-xs text-[#64748B] dark:text-[#94A3B8]">
+          <span className="flex items-center gap-1.5">
+            <CheckCircle2 className="h-4 w-4 text-[#3B7A57]" />
+            Strict Zero-Hallucination Guardrail
+          </span>
+          <span className="flex items-center gap-1.5">
+            <CheckCircle2 className="h-4 w-4 text-[#3B7A57]" />
+            1-Tap WhatsApp Callbacks
+          </span>
+          <span className="flex items-center gap-1.5">
+            <CheckCircle2 className="h-4 w-4 text-[#3B7A57]" />
+            Natural Indian Voice Accents
+          </span>
+        </div>
+      </section>
+
+      {/* 2. PRODUCT DEMONSTRATION VISUAL */}
+      <section className="editorial-card p-6 sm:p-8 parchment-banner rounded-3xl shadow-sm border border-[#E8E0D2] dark:border-[#22334A] space-y-6">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-[#E8E0D2] dark:border-[#22334A]">
+          <div>
+            <span className="text-xs font-bold uppercase tracking-wider text-[#C86D51]">
+              Live Assistant Showcase
+            </span>
+            <h2 className="font-editorial text-xl sm:text-2xl font-bold text-[#132238] dark:text-[#F8FAFC]">
+              How Call to Teach Protects Teaching Hours
+            </h2>
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="h-2.5 w-2.5 rounded-full bg-[#3B7A57] animate-pulse" />
+            <span className="text-xs font-bold text-[#132238] dark:text-[#F8FAFC]">
+              AI Shield Active: 4:00 PM – 9:00 PM
+            </span>
+          </div>
+        </div>
+
+        {/* Simulated Dialogue Graphic */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+          {/* Left: Caller Question */}
+          <div className="space-y-3">
+            <div className="p-4 rounded-2xl bg-white dark:bg-[#121E30] border border-[#EAE5D9] dark:border-[#22334A] shadow-2xs space-y-2">
+              <div className="flex items-center justify-between text-xs">
+                <span className="font-bold text-[#132238] dark:text-[#F8FAFC]">
+                  Mrs. Neha Kulkarni (Parent)
+                </span>
+                <span className="text-[10px] text-[#64748B]">Calling at 5:14 PM</span>
+              </div>
+              <p className="text-xs text-[#475569] dark:text-[#CBD5E1] italic leading-relaxed">
+                &ldquo;Namaste, I want to inquire about Class 10 tuition fees and evening batch timings for my son.&rdquo;
+              </p>
+            </div>
+
+            <div className="p-4 rounded-2xl bg-[#132238] dark:bg-[#1B365D] text-white space-y-2 shadow-xs">
+              <div className="flex items-center justify-between text-xs">
+                <span className="font-bold text-[#C5A880]">
+                  Call to Teach AI Receptionist
+                </span>
+                <span className="text-[10px] text-slate-300">Responds in 1.2s</span>
+              </div>
+              <p className="text-xs leading-relaxed">
+                &ldquo;Namaste! At Verma Science Tutorial, Class 10 Board Masterclass fee is ₹3,500 per month. Batches run Monday to Saturday from 4:30 PM to 6:00 PM. Two free trial demo classes are offered before admission.&rdquo;
+              </p>
+            </div>
+          </div>
+
+          {/* Right: What the Teacher Experiences */}
+          <div className="rounded-2xl border border-[#D9D1C2] dark:border-[#22334A] bg-[#FAF6ED] dark:bg-[#16243A] p-5 space-y-3">
+            <div className="flex items-center gap-2 text-xs font-bold text-[#3B7A57] uppercase tracking-wider">
+              <CheckCircle2 className="h-4 w-4" />
+              <span>Teacher Experience: 0 Interruptions</span>
+            </div>
+            <h3 className="font-editorial text-base sm:text-lg font-bold text-[#132238] dark:text-[#F8FAFC]">
+              Class Stays 100% Focused
+            </h3>
+            <p className="text-xs text-[#475569] dark:text-[#CBD5E1] leading-relaxed">
+              Mrs. Sunita Verma continues teaching Physics without pausing her lecture or fumbling for her phone. The parent receives instant, accurate information, and an organized summary is sent to the teacher&apos;s WhatsApp after class.
+            </p>
+            <div className="pt-2 flex items-center gap-3 text-xs font-semibold text-[#1B365D] dark:text-[#93B4E0]">
+              <span>Logged to Ledger</span>
+              <span>·</span>
+              <span>Strictly Non-Hallucinatory</span>
+              <span>·</span>
+              <span>Parent Impressed</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 3. FOUR CALLER SCENARIOS */}
+      <section className="space-y-8" id="scenarios">
+        <div className="text-center space-y-2 max-w-2xl mx-auto">
+          <span className="text-xs font-bold text-[#C86D51] uppercase tracking-wider">
+            Intelligent Call Screening
+          </span>
+          <h2 className="font-editorial text-3xl font-bold text-[#132238] dark:text-[#F8FAFC]">
+            Four Intelligent Caller Scenarios
+          </h2>
+          <p className="text-xs sm:text-sm text-[#475569] dark:text-[#CBD5E1]">
+            Different callers need different treatments. Call to Teach applies the right rule every time.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          {/* Scenario 1 */}
+          <div className="editorial-card p-5 space-y-3 flex flex-col justify-between">
+            <div className="space-y-2">
+              <div className="h-10 w-10 rounded-full bg-[#EDF3FA] dark:bg-[#1A2D4A] flex items-center justify-center text-[#1B365D] dark:text-[#93B4E0]">
+                <ShieldCheck className="h-5 w-5" />
+              </div>
+              <h3 className="text-sm font-bold text-[#132238] dark:text-[#F8FAFC]">
+                1. Trusted Whitelist
+              </h3>
+              <p className="text-xs text-[#64748B] dark:text-[#94A3B8] leading-relaxed">
+                Spouses, children&apos;s schools, and family contacts pass through directly or trigger a discreet 1-tap notification.
+              </p>
+            </div>
+            <button
+              onClick={() => onEnterApp('simulator', 'scenario_a')}
+              className="text-xs font-bold text-[#1B365D] dark:text-[#93B4E0] hover:underline flex items-center gap-1 pt-2 border-t border-[#F0ECE3] dark:border-[#1E2E44]"
+            >
+              <span>Test Whitelist Call</span>
+              <ArrowRight className="h-3 w-3" />
+            </button>
+          </div>
+
+          {/* Scenario 2 */}
+          <div className="editorial-card p-5 space-y-3 flex flex-col justify-between">
+            <div className="space-y-2">
+              <div className="h-10 w-10 rounded-full bg-[#FDF3F0] dark:bg-[#2C1E1B] flex items-center justify-center text-[#C86D51]">
+                <Users className="h-5 w-5" />
+              </div>
+              <h3 className="text-sm font-bold text-[#132238] dark:text-[#F8FAFC]">
+                2. Parent Inquiries
+              </h3>
+              <p className="text-xs text-[#64748B] dark:text-[#94A3B8] leading-relaxed">
+                Answers fees, batch timings, notes, and trial demo policies strictly from your verified teacher knowledge base.
+              </p>
+            </div>
+            <button
+              onClick={() => onEnterApp('simulator', 'scenario_b')}
+              className="text-xs font-bold text-[#1B365D] dark:text-[#93B4E0] hover:underline flex items-center gap-1 pt-2 border-t border-[#F0ECE3] dark:border-[#1E2E44]"
+            >
+              <span>Test Parent Enquiry</span>
+              <ArrowRight className="h-3 w-3" />
+            </button>
+          </div>
+
+          {/* Scenario 3 */}
+          <div className="editorial-card p-5 space-y-3 flex flex-col justify-between">
+            <div className="space-y-2">
+              <div className="h-10 w-10 rounded-full bg-[#EDF3FA] dark:bg-[#1A2D4A] flex items-center justify-center text-[#1B365D] dark:text-[#93B4E0]">
+                <Zap className="h-5 w-5" />
+              </div>
+              <h3 className="text-sm font-bold text-[#132238] dark:text-[#F8FAFC]">
+                3. Personal Transfers
+              </h3>
+              <p className="text-xs text-[#64748B] dark:text-[#94A3B8] leading-relaxed">
+                Personal callers are screened first. The teacher sees the caller name and reason before choosing to accept or decline.
+              </p>
+            </div>
+            <button
+              onClick={() => onEnterApp('simulator', 'scenario_c')}
+              className="text-xs font-bold text-[#1B365D] dark:text-[#93B4E0] hover:underline flex items-center gap-1 pt-2 border-t border-[#F0ECE3] dark:border-[#1E2E44]"
+            >
+              <span>Test Personal Transfer</span>
+              <ArrowRight className="h-3 w-3" />
+            </button>
+          </div>
+
+          {/* Scenario 4 */}
+          <div className="editorial-card p-5 space-y-3 flex flex-col justify-between">
+            <div className="space-y-2">
+              <div className="h-10 w-10 rounded-full bg-[#FAF6ED] dark:bg-[#2A241A] flex items-center justify-center text-[#C5A880]">
+                <HelpCircle className="h-5 w-5" />
+              </div>
+              <h3 className="text-sm font-bold text-[#132238] dark:text-[#F8FAFC]">
+                4. Vague &amp; Spam Callers
+              </h3>
+              <p className="text-xs text-[#64748B] dark:text-[#94A3B8] leading-relaxed">
+                Telemarketers, loans, and unclear callers are deflected gracefully with a polite message. Your teaching stays peaceful.
+              </p>
+            </div>
+            <button
+              onClick={() => onEnterApp('simulator', 'scenario_d')}
+              className="text-xs font-bold text-[#1B365D] dark:text-[#93B4E0] hover:underline flex items-center gap-1 pt-2 border-t border-[#F0ECE3] dark:border-[#1E2E44]"
+            >
+              <span>Test Spam Deflection</span>
+              <ArrowRight className="h-3 w-3" />
+            </button>
+          </div>
+        </div>
+      </section>
+
+      {/* 4. THREE-LAYER PROTECTION FOR TEACHERS */}
+      <section className="editorial-card p-8 space-y-6" id="protection">
+        <div className="max-w-2xl">
+          <span className="text-xs font-bold uppercase tracking-wider text-[#C86D51]">
+            Architected for Indian Educators
+          </span>
+          <h2 className="font-editorial text-3xl font-bold text-[#132238] dark:text-[#F8FAFC] mt-1">
+            3-Layer Classroom Protection
+          </h2>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-xs">
+          <div className="space-y-2 p-4 rounded-2xl bg-[#FAF6ED] dark:bg-[#16243A] border border-[#EAE5D9] dark:border-[#22334A]">
+            <div className="text-base font-bold text-[#132238] dark:text-[#F8FAFC]">
+              Layer 1: Priority Whitelist
+            </div>
+            <p className="text-[#475569] dark:text-[#CBD5E1] leading-relaxed">
+              Family, school authorities, and medical contacts bypass screening automatically so critical personal calls never get blocked.
+            </p>
+          </div>
+
+          <div className="space-y-2 p-4 rounded-2xl bg-[#EDF3FA] dark:bg-[#1A2D4A] border border-[#D3E0EA] dark:border-[#22334A]">
+            <div className="text-base font-bold text-[#132238] dark:text-[#F8FAFC]">
+              Layer 2: Grounded Answering
+            </div>
+            <p className="text-[#475569] dark:text-[#CBD5E1] leading-relaxed">
+              Answers routine tuition fees, batch timings, and syllabi strictly from your saved profile without fabricating unlisted courses.
+            </p>
+          </div>
+
+          <div className="space-y-2 p-4 rounded-2xl bg-[#EDF6F0] dark:bg-[#13281E] border border-[#C4E1CC] dark:border-[#23354C]">
+            <div className="text-base font-bold text-[#132238] dark:text-[#F8FAFC]">
+              Layer 3: 1-Tap Transfer Approval
+            </div>
+            <p className="text-[#475569] dark:text-[#CBD5E1] leading-relaxed">
+              When a caller needs personal attention, you get a clean 1-tap prompt with their name and reason. Accept, decline, or let timeout queue a callback.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* 5. PRIVACY & TRUST COMMITMENT */}
+      <section className="parchment-banner rounded-3xl p-8 border border-[#E8E0D2] dark:border-[#22334A] flex flex-col md:flex-row items-center justify-between gap-6">
+        <div className="space-y-2 max-w-xl">
+          <div className="inline-flex items-center gap-1.5 text-xs font-bold text-[#3B7A57] uppercase tracking-wider">
+            <Lock className="h-3.5 w-3.5" />
+            <span>Strict Privacy &amp; Data Security</span>
+          </div>
+          <h2 className="font-editorial text-2xl sm:text-3xl font-bold text-[#132238] dark:text-[#F8FAFC]">
+            Your Phone Numbers &amp; Student Data Stay Private
+          </h2>
+          <p className="text-xs sm:text-sm text-[#475569] dark:text-[#CBD5E1] leading-relaxed">
+            Call to Teach never sells educator data or caller lists. Phone numbers in the whitelist are masked, and call transcripts are stored with private encryption.
+          </p>
+        </div>
+
+        <div className="flex flex-col sm:flex-row gap-3 shrink-0">
+          <button
+            onClick={onOpenPrivacy}
+            className="px-5 py-2.5 rounded-full border border-[#D9D1C2] bg-white dark:bg-[#121E30] text-xs font-bold text-[#132238] dark:text-[#F8FAFC] hover:border-[#1B365D] transition-colors"
+          >
+            Read Privacy Policy
+          </button>
+          <button
+            onClick={onOpenTerms}
+            className="px-5 py-2.5 rounded-full border border-[#D9D1C2] bg-white dark:bg-[#121E30] text-xs font-bold text-[#132238] dark:text-[#F8FAFC] hover:border-[#1B365D] transition-colors"
+          >
+            Terms of Service
           </button>
         </div>
       </section>
 
-      {/* Clean Footer with Privacy, Terms, and Domain Links */}
-      <footer className="border-t border-slate-200 pt-8 pb-4 text-xs text-slate-700 dark:border-slate-800 dark:text-slate-300">
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div>
-            <p className="font-bold text-slate-900 dark:text-white">
-              TalktoTeach / CallSetu
-            </p>
-            <p className="text-xs mt-0.5 text-slate-600 dark:text-slate-400 font-medium">
-              Automated call screening software for educational tutors and coaching centers across India.
-            </p>
-          </div>
+      {/* 6. CALL TO ACTION FOOTER BANNER */}
+      <section className="text-center space-y-6 pt-6">
+        <h2 className="font-editorial text-3xl sm:text-4xl font-bold text-[#132238] dark:text-[#F8FAFC]">
+          Ready to teach without interruptions?
+        </h2>
+        <p className="text-xs sm:text-sm text-[#64748B] max-w-md mx-auto">
+          Launch your educator workspace and configure your AI call manager in less than 2 minutes.
+        </p>
+        <button
+          onClick={() => onEnterApp('overview')}
+          className="px-8 py-4 rounded-full bg-[#1B365D] hover:bg-[#152B4A] text-white text-sm font-bold shadow-md transition-all inline-flex items-center gap-2"
+        >
+          <span>Launch Call to Teach</span>
+          <ArrowRight className="h-4 w-4" />
+        </button>
+      </section>
 
-          <div className="flex items-center gap-4 text-xs font-bold">
-            <button
-              onClick={onOpenPrivacy}
-              className="text-slate-700 dark:text-slate-300 hover:text-indigo-700 hover:underline"
-            >
-              Privacy Policy
-            </button>
-            <span>·</span>
-            <button
-              onClick={onOpenTerms}
-              className="text-slate-700 dark:text-slate-300 hover:text-indigo-700 hover:underline"
-            >
-              Terms and Conditions
-            </button>
-            <span>·</span>
-            <button
-              onClick={onOpenDomain}
-              className="text-slate-700 dark:text-slate-300 hover:text-indigo-700 hover:underline"
-            >
-              Custom Domain
-            </button>
-          </div>
+      {/* 7. FOOTER */}
+      <footer className="pt-12 border-t border-[#EAE5D9] dark:border-[#22334A] flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[#64748B]">
+        <div className="flex items-center gap-2">
+          <span className="font-bold text-[#132238] dark:text-[#F8FAFC]">
+            Call to Teach
+          </span>
+          <span>·</span>
+          <span>© 2026 Call to Teach. Built for Educators across India.</span>
+        </div>
+
+        <div className="flex items-center gap-4 font-semibold">
+          <button onClick={onOpenPrivacy} className="hover:underline">
+            Privacy Policy
+          </button>
+          <button onClick={onOpenTerms} className="hover:underline">
+            Terms &amp; Conditions
+          </button>
+          <button onClick={onOpenDomain} className="hover:underline">
+            Domain Settings
+          </button>
         </div>
       </footer>
     </div>

@@ -1,35 +1,50 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Globe, CheckCircle2, Copy, Check, RefreshCw } from 'lucide-react';
+import { useApp } from '@/lib/store';
+import {
+  Globe,
+  CheckCircle2,
+  Copy,
+  Check,
+  RefreshCw,
+  ExternalLink,
+  Info,
+  Server,
+  AlertCircle
+} from 'lucide-react';
 
 export const CustomDomainManager: React.FC = () => {
-  const [customDomain, setCustomDomain] = useState('callsetu.bhavaniscience.in');
+  const { currentTeacher } = useApp();
+  const slug = currentTeacher.name.toLowerCase().replace(/[^a-z0-9]/g, '');
+
+  const defaultPublicUrl = `calltoteach.in/t/${slug}`;
+  const [customDomain, setCustomDomain] = useState(`${slug}classes.in`);
   const [isVerifying, setIsVerifying] = useState(false);
-  const [isConnected, setIsConnected] = useState(true);
+  const [isConnected, setIsConnected] = useState(false); // Never show unconnected as connected by default!
   const [copiedKey, setCopiedKey] = useState<string | null>(null);
 
   const dnsRecords = [
     {
       type: 'CNAME',
-      name: 'callsetu',
-      value: 'cname.talktoteach.in',
+      name: 'www',
+      value: 'cname.calltoteach.in',
       ttl: '3600',
-      status: 'Active'
+      status: isConnected ? 'Active' : 'Pending DNS'
     },
     {
       type: 'TXT',
-      name: '_talktoteach-verify',
-      value: 'tt-verify-94a872bfb442',
+      name: '_calltoteach-verify',
+      value: `ctt-verify-${slug}-8923a`,
       ttl: '3600',
-      status: 'Verified'
+      status: isConnected ? 'Verified' : 'Pending Validation'
     },
     {
       type: 'A',
       name: '@',
       value: '76.76.21.21',
       ttl: '3600',
-      status: 'Optional Apex'
+      status: isConnected ? 'Routed' : 'Pending Pointing'
     }
   ];
 
@@ -44,133 +59,160 @@ export const CustomDomainManager: React.FC = () => {
     setTimeout(() => {
       setIsVerifying(false);
       setIsConnected(true);
-    }, 1200);
+    }, 1500);
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 max-w-5xl mx-auto pb-12">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div>
-          <h2 className="text-xl font-bold text-slate-900 dark:text-white">
-            Custom Domain Configuration
-          </h2>
-          <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 font-normal mt-0.5">
-            Connect your institute&apos;s own branded domain name to host your public admissions portal and tutor profile.
+      <div className="parchment-banner rounded-2xl p-6 relative overflow-hidden flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div className="space-y-1">
+          <div className="inline-flex items-center gap-2 text-xs font-bold text-[#1B365D] dark:text-[#93B4E0] uppercase tracking-wider">
+            <Globe className="h-3.5 w-3.5 text-[#C86D51]" />
+            <span>Public Web Identity</span>
+          </div>
+          <h1 className="font-editorial text-2xl sm:text-3xl font-bold text-[#132238] dark:text-[#F8FAFC]">
+            Domain &amp; Public Link Management
+          </h1>
+          <p className="text-xs sm:text-sm text-[#475569] dark:text-[#CBD5E1] max-w-2xl leading-relaxed">
+            Every teacher profile gets a fast, free public inquiry portal under Call to Teach, or you can point your own custom `.in` / `.com` academy domain.
           </p>
         </div>
 
-        <div className="flex items-center gap-2">
-          <span className="flex h-2.5 w-2.5 rounded-full bg-emerald-500" />
-          <span className="text-xs font-bold text-emerald-800 dark:text-emerald-400">
-            Domain Status: {isConnected ? 'Connected & Secured' : 'Pending DNS'}
-          </span>
+        {/* Live Status Badge */}
+        <div className="shrink-0">
+          <div className="rounded-full border border-[#EAE5D9] dark:border-[#22334A] bg-white dark:bg-[#121E30] px-4 py-2 flex items-center gap-2 shadow-2xs text-xs font-semibold">
+            <span
+              className={`h-2.5 w-2.5 rounded-full ${
+                isConnected ? 'bg-[#3B7A57]' : 'bg-[#C86D51]'
+              }`}
+            />
+            <span className="text-[#132238] dark:text-[#F8FAFC]">
+              {isConnected ? 'Custom Domain: Active' : 'Default Subdomain Active'}
+            </span>
+          </div>
         </div>
       </div>
 
-      {/* Domain Input Card */}
-      <div className="pro-card rounded-xl p-6 space-y-4">
-        <div className="flex items-center gap-2 pb-2 border-b border-slate-100 dark:border-slate-800">
-          <Globe className="h-5 w-5 text-indigo-700 dark:text-indigo-400" />
-          <h3 className="text-sm font-bold text-slate-900 dark:text-white">
-            Target Domain Name
-          </h3>
+      {/* Grid: Default URL Card + Custom Domain Setup */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        {/* Left Column: Included Default Public Address (5 cols) */}
+        <div className="lg:col-span-5 editorial-card p-6 space-y-4 flex flex-col justify-between">
+          <div className="space-y-3">
+            <div className="flex items-center gap-2 text-xs font-bold text-[#1B365D] uppercase tracking-wider">
+              <CheckCircle2 className="h-4 w-4 text-[#3B7A57]" />
+              <span>Free Included Web Link</span>
+            </div>
+            <h3 className="text-base font-bold text-[#132238] dark:text-[#F8FAFC]">
+              Instant Public Profile URL
+            </h3>
+            <p className="text-xs text-[#64748B] leading-relaxed">
+              Your parents and students can review fee structures, trial policies, and book demo classes at your official link anytime:
+            </p>
+
+            <div className="p-3.5 rounded-xl bg-[#FAF6ED] dark:bg-[#16243A] border border-[#EAE5D9] dark:border-[#22334A] flex items-center justify-between gap-2">
+              <span className="text-xs font-mono font-bold text-[#132238] dark:text-[#F8FAFC] truncate">
+                https://{defaultPublicUrl}
+              </span>
+              <button
+                onClick={() => handleCopy(`https://${defaultPublicUrl}`, 'default_url')}
+                className="p-1.5 rounded-lg hover:bg-white text-[#1B365D] shrink-0"
+                title="Copy public address"
+              >
+                {copiedKey === 'default_url' ? <Check className="h-4 w-4 text-[#3B7A57]" /> : <Copy className="h-4 w-4" />}
+              </button>
+            </div>
+          </div>
+
+          <div className="p-3.5 rounded-xl border border-[#D9D1C2] bg-[#FAF6ED] dark:bg-[#16243A] text-xs text-[#475569] dark:text-[#CBD5E1] flex items-center gap-2">
+            <Info className="h-4 w-4 text-[#C5A880] shrink-0" />
+            <span>Always active and encrypted with automatic SSL.</span>
+          </div>
         </div>
 
-        <div className="flex flex-col sm:flex-row gap-3">
-          <div className="relative flex-1">
+        {/* Right Column: Custom Domain Management (7 cols) */}
+        <div className="lg:col-span-7 editorial-card p-6 space-y-5">
+          <div className="flex items-center justify-between border-b border-[#F0ECE3] dark:border-[#1E2E44] pb-3">
+            <div>
+              <h3 className="text-sm font-bold text-[#132238] dark:text-[#F8FAFC]">
+                Connect Your Custom Academy Domain
+              </h3>
+              <p className="text-xs text-[#64748B]">
+                Point your own domain (e.g. www.vermascience.in)
+              </p>
+            </div>
+            <span
+              className={`px-3 py-1 rounded-full text-xs font-bold ${
+                isConnected
+                  ? 'bg-[#EDF6F0] text-[#3B7A57]'
+                  : 'bg-[#FDF3F0] text-[#C86D51]'
+              }`}
+            >
+              {isConnected ? 'Connected & Verified' : 'DNS Connection Pending'}
+            </span>
+          </div>
+
+          {/* Domain Input & Verification Trigger */}
+          <div className="flex items-center gap-3">
             <input
               type="text"
               value={customDomain}
-              onChange={(e) => setCustomDomain(e.target.value)}
-              placeholder="e.g. calls.myscienceclasses.in or myinstitute.com"
-              className="w-full rounded-lg border border-slate-300 px-3.5 py-2.5 text-xs sm:text-sm font-semibold text-slate-900 focus:border-indigo-600 focus:outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-white"
+              onChange={(e) => {
+                setCustomDomain(e.target.value);
+                setIsConnected(false); // reset connection if changed
+              }}
+              placeholder="e.g. yourclass.in"
+              className="flex-1 rounded-xl border border-[#EAE5D9] dark:border-[#22334A] bg-[#FBF9F5] dark:bg-[#0C1420] px-3.5 py-2.5 text-xs text-[#132238] dark:text-[#F8FAFC] font-mono focus:outline-none focus:border-[#1B365D]"
             />
+            <button
+              onClick={handleVerify}
+              disabled={isVerifying}
+              className="px-5 py-2.5 rounded-full bg-[#1B365D] hover:bg-[#152B4A] text-white text-xs font-bold transition-all shadow-xs flex items-center gap-1.5 shrink-0"
+            >
+              {isVerifying && <RefreshCw className="h-3.5 w-3.5 animate-spin" />}
+              <span>{isVerifying ? 'Verifying...' : 'Verify DNS Records'}</span>
+            </button>
           </div>
 
-          <button
-            onClick={handleVerify}
-            disabled={isVerifying}
-            className="btn-primary flex items-center justify-center gap-2 rounded-lg px-5 py-2.5 text-xs sm:text-sm font-bold whitespace-nowrap disabled:opacity-50"
-          >
-            {isVerifying ? (
-              <>
-                <RefreshCw className="h-4 w-4 animate-spin" />
-                <span>Checking DNS...</span>
-              </>
-            ) : (
-              <>
-                <CheckCircle2 className="h-4 w-4" />
-                <span>Verify &amp; Apply DNS</span>
-              </>
-            )}
-          </button>
-        </div>
-
-        <div className="rounded-lg border border-emerald-200 bg-emerald-50/80 p-4 text-xs sm:text-sm text-emerald-950 dark:border-emerald-900/60 dark:bg-emerald-950/40 dark:text-emerald-200 flex items-start gap-2.5">
-          <CheckCircle2 className="h-4 w-4 text-emerald-700 mt-0.5 shrink-0" />
-          <div>
-            <p className="font-bold text-slate-900 dark:text-emerald-200">Active Custom Domain:</p>
-            <p className="text-xs sm:text-sm mt-0.5 font-medium text-emerald-900 dark:text-emerald-300">
-              https://{customDomain} is mapped and routing with auto-renewing TLS/SSL certificates.
-            </p>
-          </div>
-        </div>
-      </div>
-
-      {/* DNS Records Table */}
-      <div className="pro-card rounded-xl p-6 space-y-4">
-        <div className="flex items-center justify-between pb-2 border-b border-slate-100 dark:border-slate-800">
-          <div>
-            <h3 className="text-sm font-bold text-slate-900 dark:text-white">
-              DNS Configuration Records
-            </h3>
-            <p className="text-xs text-slate-600 dark:text-slate-300 font-normal">
-              Add these records in your domain registrar (GoDaddy, Namecheap, Cloudflare, or BigRock):
-            </p>
-          </div>
-        </div>
-
-        <div className="overflow-x-auto">
-          <table className="w-full text-left text-xs sm:text-sm">
-            <thead>
-              <tr className="border-b border-slate-200 text-slate-700 dark:text-slate-300 dark:border-slate-800">
-                <th className="py-2.5 px-3 font-bold">Type</th>
-                <th className="py-2.5 px-3 font-bold">Host / Name</th>
-                <th className="py-2.5 px-3 font-bold">Target Value</th>
-                <th className="py-2.5 px-3 font-bold">TTL</th>
-                <th className="py-2.5 px-3 font-bold text-right">Action</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-slate-100 dark:divide-slate-800 text-slate-800 dark:text-slate-200 font-medium">
-              {dnsRecords.map((r, i) => (
-                <tr key={i} className="hover:bg-slate-50 dark:hover:bg-slate-800/50">
-                  <td className="py-3 px-3 font-mono font-bold text-indigo-700 dark:text-indigo-400">{r.type}</td>
-                  <td className="py-3 px-3 font-mono font-semibold">{r.name}</td>
-                  <td className="py-3 px-3 font-mono truncate max-w-xs">{r.value}</td>
-                  <td className="py-3 px-3 tabular-nums">{r.ttl}</td>
-                  <td className="py-3 px-3 text-right">
-                    <button
-                      onClick={() => handleCopy(r.value, `rec_${i}`)}
-                      className="btn-secondary inline-flex items-center gap-1 rounded-md px-2.5 py-1 text-xs font-bold"
+          {/* DNS Records Table */}
+          <div className="space-y-2">
+            <span className="text-[11px] font-bold text-[#64748B] uppercase tracking-wider block">
+              Required DNS Configuration:
+            </span>
+            <div className="rounded-xl border border-[#EAE5D9] dark:border-[#22334A] overflow-hidden text-xs">
+              <div className="bg-[#FAF6ED] dark:bg-[#16243A] px-4 py-2 font-bold text-[#132238] dark:text-[#F8FAFC] grid grid-cols-12 text-[11px]">
+                <span className="col-span-2">Type</span>
+                <span className="col-span-3">Host</span>
+                <span className="col-span-5">Points To / Value</span>
+                <span className="col-span-2 text-right">Status</span>
+              </div>
+              <div className="divide-y divide-[#F0ECE3] dark:divide-[#1E2E44]">
+                {dnsRecords.map((rec, i) => (
+                  <div key={i} className="px-4 py-2.5 grid grid-cols-12 items-center text-[11px] font-mono">
+                    <span className="col-span-2 font-bold text-[#1B365D] dark:text-[#93B4E0]">{rec.type}</span>
+                    <span className="col-span-3 text-[#132238] dark:text-[#F8FAFC]">{rec.name}</span>
+                    <div className="col-span-5 flex items-center justify-between pr-2 text-[#475569] dark:text-[#CBD5E1] truncate">
+                      <span className="truncate">{rec.value}</span>
+                      <button
+                        onClick={() => handleCopy(rec.value, `dns_${i}`)}
+                        className="p-1 hover:text-[#132238] ml-1"
+                        title="Copy record value"
+                      >
+                        {copiedKey === `dns_${i}` ? <Check className="h-3 w-3 text-[#3B7A57]" /> : <Copy className="h-3 w-3" />}
+                      </button>
+                    </div>
+                    <span
+                      className={`col-span-2 text-right font-sans font-bold text-[10px] ${
+                        isConnected ? 'text-[#3B7A57]' : 'text-[#C86D51]'
+                      }`}
                     >
-                      {copiedKey === `rec_${i}` ? (
-                        <>
-                          <Check className="h-3.5 w-3.5 text-emerald-700" />
-                          <span>Copied</span>
-                        </>
-                      ) : (
-                        <>
-                          <Copy className="h-3.5 w-3.5" />
-                          <span>Copy</span>
-                        </>
-                      )}
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+                      {rec.status}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

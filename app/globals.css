@@ -4,131 +4,134 @@
 
 @layer base {
   :root {
-    --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
-    --bg-page: #F8FAFC;
-    --bg-gradient: linear-gradient(135deg, #F8FAFC 0%, #FAF8F5 50%, #F1F5F9 100%);
-    --text-primary: #0F172A; /* Deep slate #0F172A */
-    --text-secondary: #334155; /* Slate 700 */
-    --text-muted: #475569; /* Slate 600 - WCAG AA compliant */
-    --card-bg: #FFFFFF;
-    --card-border: #CBD5E1;
+    --font-sans: var(--font-sans), system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    --font-serif: var(--font-serif), Georgia, Cambria, "Times New Roman", Times, serif;
+    
+    /* Concept B — Warm Editorial Palette */
+    --color-warm-ivory: #FBF9F5;
+    --color-ivory-surface: #FFFFFF;
+    --color-ivory-subtle: #F6F3EC;
+    --color-ivory-tint: #F2EFE8;
+    --color-midnight-navy: #132238;
+    --color-deep-cobalt: #1B365D;
+    --color-cobalt-hover: #152B4A;
+    --color-muted-terracotta: #C86D51;
+    --color-terracotta-tint: #FDF3F0;
+    --color-soft-sage: #3B7A57;
+    --color-sage-tint: #EDF6F0;
+    --color-champagne-gold: #C5A880;
+    --color-gold-tint: #FAF6ED;
+    --color-slate-text: #64748B;
+    --color-border-warm: #EAE5D9;
+    --color-border-subtle: #F0ECE3;
   }
 
   html.dark {
-    --bg-page: #0B0F19;
-    --bg-gradient: linear-gradient(135deg, #0B0F19 0%, #111827 50%, #0F172A 100%);
-    --text-primary: #F8FAFC;
-    --text-secondary: #CBD5E1;
-    --text-muted: #94A3B8;
-    --card-bg: #131B2E;
-    --card-border: #1E293B;
+    --color-warm-ivory: #0C1420;
+    --color-ivory-surface: #121E30;
+    --color-ivory-subtle: #17263D;
+    --color-ivory-tint: #1C2D47;
+    --color-midnight-navy: #F8FAFC;
+    --color-deep-cobalt: #284C7E;
+    --color-cobalt-hover: #335E99;
+    --color-muted-terracotta: #E28468;
+    --color-terracotta-tint: #2C1E1B;
+    --color-soft-sage: #5BA87B;
+    --color-sage-tint: #13281E;
+    --color-champagne-gold: #D6BD96;
+    --color-gold-tint: #282319;
+    --color-slate-text: #94A3B8;
+    --color-border-warm: #22334A;
+    --color-border-subtle: #1B293C;
   }
 
   html {
     color-scheme: light dark;
+    scroll-behavior: smooth;
   }
 
   body {
     font-family: var(--font-sans);
-    color: var(--text-primary);
-    background-color: var(--bg-page);
+    color: var(--color-midnight-navy);
+    background-color: var(--color-warm-ivory);
     min-height: 100vh;
-    overflow-x: hidden;
-    font-size: 15px;
+    font-size: 14.5px;
     line-height: 1.6;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
 }
 
-/* Premium Architectural Surfaces with Guaranteed High Contrast */
-.pro-card {
-  background-color: var(--card-bg, #FFFFFF);
-  border: 1px solid var(--card-border, #CBD5E1);
-  color: var(--text-primary, #0F172A);
-  box-shadow: 0 1px 3px 0 rgba(15, 23, 42, 0.05), 0 1px 2px -1px rgba(15, 23, 42, 0.05);
+/* Warm Editorial Typography */
+.font-editorial {
+  font-family: var(--font-serif);
+  letter-spacing: -0.015em;
 }
 
-.pro-card-subtle {
-  background-color: #F8FAFC;
-  border: 1px solid #CBD5E1;
-  color: var(--text-primary, #0F172A);
+.font-sans-clean {
+  font-family: var(--font-sans);
 }
 
-html.dark .pro-card-subtle {
-  background-color: rgba(19, 27, 46, 0.7);
-  border-color: #1E293B;
-  color: var(--text-primary, #F8FAFC);
+/* Restrained Warm Editorial Cards */
+.editorial-card {
+  background-color: var(--color-ivory-surface);
+  border: 1px solid var(--color-border-warm);
+  border-radius: 16px;
+  box-shadow: 0 1px 3px 0 rgba(19, 34, 56, 0.04), 0 1px 2px -1px rgba(19, 34, 56, 0.03);
 }
 
-/* High-Contrast Interactive Controls */
-.btn-primary {
-  background-color: #4338CA;
-  color: #FFFFFF !important;
-  border: 1px solid #3730A3;
-  box-shadow: 0 1px 2px 0 rgba(67, 56, 202, 0.25);
-  transition: all 0.15s ease;
+.editorial-card-subtle {
+  background-color: var(--color-ivory-subtle);
+  border: 1px solid var(--color-border-warm);
+  border-radius: 14px;
 }
 
-.btn-primary:hover {
-  background-color: #3730A3;
-  border-color: #312E81;
+/* Parchment / Paper Banner style */
+.parchment-banner {
+  background: linear-gradient(135deg, #FBF8F1 0%, #F5F0E6 100%);
+  border: 1px solid #E8E0D2;
+  box-shadow: 0 1px 2px rgba(19, 34, 56, 0.03);
 }
 
-.btn-secondary {
-  background-color: #FFFFFF;
-  color: #0F172A !important;
-  border: 1px solid #CBD5E1;
-  box-shadow: 0 1px 2px 0 rgba(15, 23, 42, 0.05);
-  transition: all 0.15s ease;
+html.dark .parchment-banner {
+  background: linear-gradient(135deg, #172437 0%, #131E2E 100%);
+  border: 1px solid #23354C;
 }
 
-html.dark .btn-secondary {
-  background-color: #131B2E;
-  color: #F8FAFC !important;
-  border-color: #334155;
+/* Subtle Soundwave animation bars */
+@keyframes wave-bounce {
+  0%, 100% { height: 6px; }
+  50% { height: 28px; }
 }
 
-.btn-secondary:hover {
-  background-color: #F1F5F9;
-  border-color: #94A3B8;
+.wave-bar {
+  animation: wave-bounce 1.2s ease-in-out infinite;
+  transform-origin: bottom;
 }
 
-html.dark .btn-secondary:hover {
-  background-color: #1E293B;
-  border-color: #64748B;
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
 }
 
-.btn-accent {
-  background-color: #D97706;
-  color: #FFFFFF !important;
-  border: 1px solid #B45309;
-  box-shadow: 0 1px 2px 0 rgba(217, 119, 6, 0.25);
-  transition: all 0.15s ease;
+::-webkit-scrollbar-track {
+  background: transparent;
 }
 
-.btn-accent:hover {
-  background-color: #B45309;
+::-webkit-scrollbar-thumb {
+  background: #D9D3C5;
+  border-radius: 9999px;
 }
 
-/* Explicit high-visibility text utility classes */
-.text-high-contrast {
-  color: #0F172A !important;
+html.dark ::-webkit-scrollbar-thumb {
+  background: #2D3E54;
 }
 
-html.dark .text-high-contrast {
-  color: #FFFFFF !important;
+::-webkit-scrollbar-thumb:hover {
+  background: #C5BCAC;
 }
 
-.text-muted-contrast {
-  color: #334155 !important;
-}
-
-html.dark .text-muted-contrast {
-  color: #CBD5E1 !important;
-}
-
-/* Tabular figures for all numeric indicators */
-.tabular-nums {
-  font-variant-numeric: tabular-nums;
+html.dark ::-webkit-scrollbar-thumb:hover {
+  background: #3D516D;
 }
